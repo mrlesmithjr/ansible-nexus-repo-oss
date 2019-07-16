@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-nexus-repository-sonatype
+nexus_repository_sonatype_dl_url: "{{ 'http://download.sonatype.com/nexus/' + nexus_repository_sonatype_version.split('.')[0]|string + '/nexus-' + nexus_repository_sonatype_version|string +'-01-unix.tar.gz' }}"
+
+nexus_repository_sonatype_version: 3.17.0

@@ -1,0 +1,8 @@
+---
+- name: debian | Installing Pre-Reqs
+  apt:
+    name: ["openjdk-8-jre"]
+    state: present
+  become: true
+  register: result
+  until: result is successful

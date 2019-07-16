@@ -1,0 +1,60 @@
+---
+- name: install | Creating Nexus User
+  user:
+    create_home: false
+    home: /nonexistent
+    name: nexus
+    shell: /usr/sbin/nologin
+    state: present
+    system: true
+  become: true
+
+- name: install | Downloading Nexus Repository Sonatype
+  unarchive:
+    src: "{{ nexus_repository_sonatype_dl_url }}"
+    dest: /opt
+    remote_src: true
+    creates: "{{ '/opt/nexus-' + nexus_repository_sonatype_version|string + '-01' }}"
+  become: true
+
+- name: install | Setting Permissions
+  file:
+    group: nexus
+    owner: nexus
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  become: true
+  loop:
+    - "{{ '/opt/nexus-' + nexus_repository_sonatype_version|string + '-01' }}"
+    - /opt/sonatype-work
+
+- name: install | Configuring Service
+  template:
+    src: nexus.service.j2
+    dest: /etc/systemd/system/nexus.service
+  become: true
+
+- name: install | Ensuring Service Is Started and Enabled
+  systemd:
+    name: nexus.service
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: install | Checking For Initial Admin Password
+  stat:
+    path: /opt/sonatype-work/nexus3/admin.password
+  register: nexus_initial_password
+
+- name: install | Capturing Nexus Admin Password
+  slurp:
+    src: /opt/sonatype-work/nexus3/admin.password
+  register: nexus_admin_password
+  when: nexus_initial_password['stat']['exists']
+
+- name: install | Displaying Nexus Admin Password
+  debug:
+    msg: "Admin password: {{ nexus_admin_password['content'] | b64decode }}"
+  when: nexus_initial_password['stat']['exists']

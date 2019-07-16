@@ -1,0 +1,7 @@
+---
+# tasks file for ansible-nexus-repository-sonatype
+
+- include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: install.yml
