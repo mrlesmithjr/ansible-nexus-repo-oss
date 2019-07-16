@@ -1,5 +1,5 @@
 ---
-- name: debian | Installing Pre-Reqs
+- name: debian | Installing Nexus Repo OSS Pre-Reqs
   apt:
     name: ["openjdk-8-jre"]
     state: present

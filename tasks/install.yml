@@ -9,15 +9,15 @@
     system: true
   become: true
 
-- name: install | Downloading Nexus Repository Sonatype
+- name: install | Downloading Nexus Repo OSS
   unarchive:
-    src: "{{ nexus_repository_sonatype_dl_url }}"
+    src: "{{ nexus_repo_oss_dl_url }}"
     dest: /opt
     remote_src: true
-    creates: "{{ '/opt/nexus-' + nexus_repository_sonatype_version|string + '-01' }}"
+    creates: "{{ '/opt/nexus-' + nexus_repo_oss_version|string + '-01' }}"
   become: true
 
-- name: install | Setting Permissions
+- name: install | Setting Permissions On Nexus Repo Dirs
   file:
     group: nexus
     owner: nexus
@@ -26,16 +26,16 @@
     recurse: true
   become: true
   loop:
-    - "{{ '/opt/nexus-' + nexus_repository_sonatype_version|string + '-01' }}"
+    - "{{ '/opt/nexus-' + nexus_repo_oss_version|string + '-01' }}"
     - /opt/sonatype-work
 
-- name: install | Configuring Service
+- name: install | Configuring Nexus Repo OSS Service
   template:
     src: nexus.service.j2
     dest: /etc/systemd/system/nexus.service
   become: true
 
-- name: install | Ensuring Service Is Started and Enabled
+- name: install | Ensuring Nexus Repo OSS Service Is Started and Enabled
   systemd:
     name: nexus.service
     state: started
@@ -43,7 +43,7 @@
     daemon_reload: true
   become: true
 
-- name: install | Checking For Initial Admin Password
+- name: install | Checking For Initial Nexus Admin Password
   stat:
     path: /opt/sonatype-work/nexus3/admin.password
   register: nexus_initial_password

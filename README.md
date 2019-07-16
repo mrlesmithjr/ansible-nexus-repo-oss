@@ -1,6 +1,6 @@
-# ansible-nexus-repository-sonatype
+# ansible-nexus-repo-oss
 
-Installs [Nexus Repository Sonatype](https://www.sonatype.com/nexus-repository-oss)
+Installs [Nexus Repository OSS](https://www.sonatype.com/nexus-repository-oss)
 
 ## Requirements
 
