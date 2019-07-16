@@ -1,6 +1,6 @@
 galaxy_info:
   author: Larry Smith Jr.
-  description: Installs [Nexus Repository Sonatype](https://www.sonatype.com/nexus-repository-oss)
+  description: Installs [Nexus Repo OSS](https://www.sonatype.com/nexus-repository-oss)
   license: MIT
   min_ansible_version: 2.4
   platforms:

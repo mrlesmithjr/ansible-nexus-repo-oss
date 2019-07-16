@@ -4,4 +4,8 @@
 - include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
+- include_tasks: windows.yml
+  when: ansible_os_family == 'Windows'
+
 - include_tasks: install.yml
+  when: ansible_os_family != 'Windows'

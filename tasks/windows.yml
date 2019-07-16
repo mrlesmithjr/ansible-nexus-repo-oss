@@ -1,0 +1,5 @@
+---
+- name: windows | Installing Nexus Repo OSS
+  win_chocolatey:
+    name: nexus-oss
+    state: present
