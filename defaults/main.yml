@@ -2,4 +2,6 @@
 # defaults file for ansible-nexus-repo-oss
 nexus_repo_oss_dl_url: "{{ 'http://download.sonatype.com/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/nexus-' + nexus_repo_oss_version|string +'-01-unix.tar.gz' }}"
 
+nexus_repo_oss_install_dir: /opt
+
 nexus_repo_oss_version: 3.17.0

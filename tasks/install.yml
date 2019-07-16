@@ -12,9 +12,9 @@
 - name: install | Downloading Nexus Repo OSS
   unarchive:
     src: "{{ nexus_repo_oss_dl_url }}"
-    dest: /opt
+    dest: "{{ nexus_repo_oss_install_dir }}"
     remote_src: true
-    creates: "{{ '/opt/nexus-' + nexus_repo_oss_version|string + '-01' }}"
+    creates: "{{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01' }}"
   become: true
 
 - name: install | Setting Permissions On Nexus Repo Dirs
@@ -26,8 +26,8 @@
     recurse: true
   become: true
   loop:
-    - "{{ '/opt/nexus-' + nexus_repo_oss_version|string + '-01' }}"
-    - /opt/sonatype-work
+    - "{{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01' }}"
+    - "{{ nexus_repo_oss_install_dir + '/sonatype-work' }}"
 
 - name: install | Configuring Nexus Repo OSS Service
   template:
@@ -45,12 +45,12 @@
 
 - name: install | Checking For Initial Nexus Admin Password
   stat:
-    path: "{{ '/opt/sonatype-work/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
+    path: "{{ nexus_repo_oss_install_dir + '/sonatype-work/nexus' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
   register: nexus_initial_password
 
 - name: install | Capturing Nexus Admin Password
   slurp:
-    src: "{{ '/opt/sonatype-work/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
+    src: "{{ nexus_repo_oss_install_dir + '/sonatype-work/nexus' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
   register: nexus_admin_password
   when: nexus_initial_password['stat']['exists']
 
