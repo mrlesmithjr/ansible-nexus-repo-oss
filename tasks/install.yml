@@ -45,12 +45,12 @@
 
 - name: install | Checking For Initial Nexus Admin Password
   stat:
-    path: /opt/sonatype-work/nexus3/admin.password
+    path: "{{ '/opt/sonatype-work/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
   register: nexus_initial_password
 
 - name: install | Capturing Nexus Admin Password
   slurp:
-    src: /opt/sonatype-work/nexus3/admin.password
+    src: "{{ '/opt/sonatype-work/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
   register: nexus_admin_password
   when: nexus_initial_password['stat']['exists']
 
