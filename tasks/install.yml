@@ -34,6 +34,7 @@
     src: nexus.service.j2
     dest: /etc/systemd/system/nexus.service
   become: true
+  when: ansible_service_mgr == "systemd"
 
 - name: install | Ensuring Nexus Repo OSS Service Is Started and Enabled
   systemd:
@@ -42,19 +43,29 @@
     enabled: true
     daemon_reload: true
   become: true
+  when: ansible_service_mgr == "systemd"
 
-- name: install | Checking For Initial Nexus Admin Password
+- name: install | Waiting For Nexus Repo OSS Service To Start
+  wait_for:
+    port: 8081
+
+- name: install | Checking For Initial Nexus Default Admin Password
   stat:
     path: "{{ nexus_repo_oss_install_dir + '/sonatype-work/nexus' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
-  register: nexus_initial_password
+  register: nexus_repo_oss_default_pass_check
 
 - name: install | Capturing Nexus Admin Password
   slurp:
     src: "{{ nexus_repo_oss_install_dir + '/sonatype-work/nexus' + nexus_repo_oss_version.split('.')[0]|string + '/admin.password' }}"
-  register: nexus_admin_password
-  when: nexus_initial_password['stat']['exists']
+  register: _nexus_repo_oss_temp_pass
+  when: nexus_repo_oss_default_pass_check['stat']['exists']
+
+- name: install | Setting Admin Password Fact
+  set_fact:
+    nexus_repo_oss_temp_pass: "{{ _nexus_repo_oss_temp_pass['content'] | b64decode }}"
+  when: nexus_repo_oss_default_pass_check['stat']['exists']
 
 - name: install | Displaying Nexus Admin Password
   debug:
-    msg: "Admin password: {{ nexus_admin_password['content'] | b64decode }}"
-  when: nexus_initial_password['stat']['exists']
+    msg: "Admin password: {{ nexus_repo_oss_temp_pass }}"
+  when: nexus_repo_oss_default_pass_check['stat']['exists']
