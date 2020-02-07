@@ -29,14 +29,31 @@
     - "{{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01' }}"
     - "{{ nexus_repo_oss_install_dir + '/sonatype-work' }}"
 
-- name: install | Configuring Nexus Repo OSS Service
+- name: install | Configuring Nexus Repo OSS Service (upstart|sysvinit)
+  file:
+    src: "{{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01/bin/nexus' }}"
+    dest: /etc/init.d/nexus
+    state: link
+  become: true
+  when: >
+    ansible_service_mgr == "upstart"
+    or ansible_service_mgr == "sysvinit"
+
+- name: install | Ensuring Nexus Repo OSS Service Is Started and Enabled (upstart|sysvinit)
+  service:
+    name: nexus
+    state: started
+    enabled: true
+  become: true
+
+- name: install | Configuring Nexus Repo OSS Service (systemd)
   template:
     src: nexus.service.j2
     dest: /etc/systemd/system/nexus.service
   become: true
   when: ansible_service_mgr == "systemd"
 
-- name: install | Ensuring Nexus Repo OSS Service Is Started and Enabled
+- name: install | Ensuring Nexus Repo OSS Service Is Started and Enabled (systemd)
   systemd:
     name: nexus.service
     state: started

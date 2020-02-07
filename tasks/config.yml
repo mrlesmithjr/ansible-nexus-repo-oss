@@ -1,0 +1,62 @@
+---
+- name: config | Capture Existing Repositories
+  uri:
+    url: "{{ nexus_repo_oss_api_url + '/repositories' }}"
+    method: GET
+    force_basic_auth: true
+    user: admin
+    password: "{{ nexus_repo_oss_temp_pass }}"
+    return_content: true
+  register: nexus_repo_oss_existing_repos
+
+- debug: var=nexus_repo_oss_existing_repos['json']
+
+- name: config | Capture Existing Scripts
+  uri:
+    url: "{{ nexus_repo_oss_api_url + '/script' }}"
+    method: GET
+    force_basic_auth: true
+    user: admin
+    password: "{{ nexus_repo_oss_temp_pass }}"
+    return_content: true
+  register: _nexus_repo_oss_existing_scripts
+
+- debug: var=_nexus_repo_oss_existing_scripts['json']
+
+- name: config | Setting Existing Scripts
+  set_fact:
+    nexus_repo_oss_existing_scripts: []
+
+- name: config | Updating Existing Scripts
+  set_fact:
+    nexus_repo_oss_existing_scripts: "{{ nexus_repo_oss_existing_scripts + [item['name']] }}"
+  loop: "{{ _nexus_repo_oss_existing_scripts['json'] }}"
+
+- name: config | Configuring Scripts
+  uri:
+    url: "{{ nexus_repo_oss_api_url + '/script' }}"
+    method: POST
+    body_format: json
+    force_basic_auth: true
+    user: admin
+    password: "{{ nexus_repo_oss_temp_pass }}"
+    status_code: 204
+    body:
+      name: "{{ item['name'] }}"
+      type: groovy
+      content: "{{ lookup('file', item['name'] + '.groovy') }}"
+  loop: "{{ nexus_repo_oss_groovy_scripts }}"
+  when: item['name'] not in nexus_repo_oss_existing_scripts
+
+- name: config | Running Scripts
+  uri:
+    url: "{{ nexus_repo_oss_api_url + '/script/' + item['name'] + '/run' }}"
+    method: POST
+    headers:
+      Content-Type: text/plain
+    force_basic_auth: true
+    user: admin
+    password: "{{ nexus_repo_oss_temp_pass }}"
+    status_code: 200,204
+    body: "{{ item['args'] | to_json }}"
+  loop: "{{ nexus_repo_oss_groovy_scripts }}"

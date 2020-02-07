@@ -1,6 +1,13 @@
 ---
 # defaults file for ansible-nexus-repo-oss
+nexus_repo_oss_api_url: http://localhost:8081/service/rest/v1
+
 nexus_repo_oss_dl_url: "{{ 'http://download.sonatype.com/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/nexus-' + nexus_repo_oss_version|string +'-01-unix.tar.gz' }}"
+
+nexus_repo_oss_groovy_scripts:
+  - name: anonymous_access
+    args:
+      anonymous_access: true
 
 nexus_repo_oss_install_dir: /opt
 

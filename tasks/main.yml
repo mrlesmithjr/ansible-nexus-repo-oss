@@ -9,3 +9,6 @@
 
 - include_tasks: install.yml
   when: ansible_os_family != 'Windows'
+
+- include_tasks: config.yml
+  when: nexus_repo_oss_temp_pass is defined
