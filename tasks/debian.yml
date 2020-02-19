@@ -1,7 +1,8 @@
 ---
 - name: debian | Installing Nexus Repo OSS Pre-Reqs
   apt:
-    name: ["openjdk-8-jre"]
+    name:
+      - openjdk-8-jre
     state: present
   become: true
   register: result
