@@ -16,6 +16,7 @@
     remote_src: true
     creates: "{{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01' }}"
   become: true
+  retries: 3
 
 - name: install | Setting Permissions On Nexus Repo Dirs
   file:
