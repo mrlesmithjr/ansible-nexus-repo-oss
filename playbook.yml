@@ -1,5 +1,7 @@
 ---
 - name: Example Playbook
   hosts: all
-  roles:
-    - role: ansible-nexus-repo-oss
+  tasks:
+    - name: Include ansible-nexus-repo-oss
+      include_role:
+        name: ansible-nexus-repo-oss
