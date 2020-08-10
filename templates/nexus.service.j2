@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=forking
 LimitNOFILE=65536
-ExecStart={{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01/bin/nexus start' }}
-ExecStop={{ nexus_repo_oss_install_dir + '/nexus-' + nexus_repo_oss_version|string + '-01/bin/nexus stop' }}
+ExecStart={{ nexus_repo_oss_install_dir+'/nexus-'+nexus_repo_oss_version|string+'/bin/nexus start' }}
+ExecStop={{ nexus_repo_oss_install_dir+'/nexus-'+nexus_repo_oss_version|string+'/bin/nexus stop' }}
 User=nexus
 Restart=on-abort
 

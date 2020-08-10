@@ -1,7 +1,27 @@
 ---
 # defaults file for ansible-nexus-repo-oss
-nexus_repo_oss_dl_url: "{{ 'http://download.sonatype.com/nexus/' + nexus_repo_oss_version.split('.')[0]|string + '/nexus-' + nexus_repo_oss_version|string +'-01-unix.tar.gz' }}"
+nexus_repo_oss_default_settings_file: "{{ nexus_repo_oss_install_dir }}/nexus-{{ nexus_repo_oss_version }}/etc/nexus-default.properties"
+nexus_repo_oss_dl_url: "http://download.sonatype.com/nexus/{{ nexus_repo_oss_version.split('.')[0] }}/{{ nexus_repo_oss_package }}"
+nexus_repo_oss_install_dir: /opt/sonatype
+nexus_repo_oss_package: "nexus-{{ nexus_repo_oss_version }}-unix.tar.gz"
+nexus_repo_oss_version: 3.25.1-04
 
-nexus_repo_oss_install_dir: /opt
+# Define APT proxies to add
+nexus_repo_oss_apt_proxies:
+  []
+  # - name: bionic
+  #   url: http://archive.ubuntu.com/ubuntu/
+  # - name: focal
+  #   url: http://archive.ubuntu.com/ubuntu/
 
-nexus_repo_oss_version: 3.17.0
+# Define Nuget proxies to add
+nexus_repo_oss_nuget_proxies:
+  []
+  # - name: chocolatey-proxy
+  #   url: https://chocolatey.org/api/v2/
+
+# Define YUM proxies to add
+nexus_repo_oss_yum_proxies:
+  []
+  # - name: centos
+  #   url: http://mirror.centos.org/centos/

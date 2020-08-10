@@ -1,8 +1,6 @@
 # ansible-nexus-repo-oss
 
-Ansible role to install Nexus Repo OSS
-
-- [Nexus Repository OSS](https://www.sonatype.com/nexus-repository-oss)
+Ansible role to install/configure [Sonatype Nexus Repo OSS](https://www.sonatype.com/nexus-repository-oss)
 
 ## Build Status
 
@@ -28,6 +26,36 @@ For any required Ansible roles, review:
 ## Example Playbook
 
 [playbook.yml](playbook.yml)
+
+## Setting Up Clients
+
+### CentOS
+
+```bash
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://192.168.250.11:8081/repository/centos/$releasever/os/$basearch/
+
+[updates]
+name=CentOS-$releasever - Updates
+baseurl=http://192.168.250.11:8081/repository/centos/$releasever/updates/$basearch/
+
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=http://192.168.250.11:8081/repository/centos/$releasever/extras/$basearch/
+```
+
+### Ubuntu
+
+```bash
+deb http://192.168.250.11:8081/repository/bionic/ bionic main restricted
+deb http://192.168.250.11:8081/repository/bionic/ bionic-updates main restricted
+deb http://192.168.250.11:8081/repository/bionic/ bionic universe
+deb http://192.168.250.11:8081/repository/bionic/ bionic-updates universe
+deb http://192.168.250.11:8081/repository/bionic/ bionic multiverse
+deb http://192.168.250.11:8081/repository/bionic/ bionic-updates multiverse
+deb http://192.168.250.11:8081/repository/bionic/ bionic-backports main restricted universe multiverse
+```
 
 ## License
 

@@ -1,0 +1,211 @@
+---
+- name: config | Managing APT Proxies
+  block:
+    - name: config | Adding APT Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "apt": {
+              "distribution": "{{ item.name }}",
+              "flat": false
+            },
+            "httpClient": {"blocked": false, "autoBlock": true}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/apt/proxy
+        method: POST
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 201
+      loop: "{{ nexus_repo_oss_apt_proxies }}"
+
+  rescue:
+    - name: config | Updating APT Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "apt": {
+              "distribution": "{{ item.name }}",
+              "flat": false
+            },
+            "httpClient": {"blocked": false, "autoBlock": true}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/apt/proxy/{{ item.name }}
+        method: PUT
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 204
+      loop: "{{ nexus_repo_oss_apt_proxies }}"
+
+- name: config | Managing YUM Proxies
+  block:
+    - name: config | Adding YUM Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "httpClient": {"blocked": false, "autoBlock": true}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/yum/proxy
+        method: POST
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 201
+      loop: "{{ nexus_repo_oss_yum_proxies }}"
+
+  rescue:
+    - name: config | Updating APT Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "httpClient": {"blocked": false, "autoBlock": true}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/yum/proxy/{{ item.name }}
+        method: PUT
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 204
+      loop: "{{ nexus_repo_oss_yum_proxies }}"
+
+- name: config | Managing Nuget Proxies
+  block:
+    - name: config | Adding Nuget Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "httpClient": {"blocked": false, "autoBlock": true},
+            "nugetProxy": {}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/nuget/proxy
+        method: POST
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 201
+      loop: "{{ nexus_repo_oss_nuget_proxies }}"
+
+  rescue:
+    - name: config | Updating Nuget Proxies
+      uri:
+        body_format: json
+        body: |
+          {
+            "name": "{{ item.name }}",
+            "online": true,
+            "storage": {
+              "blobStoreName": "default",
+              "strictContentTypeValidation": true
+            },
+            "proxy": {
+              "remoteUrl": "{{ item.url }}",
+              "contentMaxAge": 1440,
+              "metadataMaxAge": 1440
+            },
+            "negativeCache": {
+              "enabled": true,
+              "timeToLive": 1440
+            },
+            "routingRule": "string",
+            "httpClient": {"blocked": false, "autoBlock": true},
+            "nugetProxy": {}
+          }
+        force_basic_auth: true
+        url: http://127.0.0.1:8081/service/rest/beta/repositories/nuget/proxy/{{ item.name }}
+        method: PUT
+        user: admin
+        password: "{{ nexus_repo_oss_temp_pass }}"
+        status_code:
+          - 204
+      loop: "{{ nexus_repo_oss_nuget_proxies }}"
