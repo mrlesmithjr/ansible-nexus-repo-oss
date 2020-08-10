@@ -1,3 +1,15 @@
+commit 2fa76b1ca28aacbd08ba56e35428f0c8a9108e8f
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Aug 10 13:43:36 2020 -0400
+
+    Added Flake8 config
+
+commit 53e80c80d9ff52148a785d35fda38067a183db47
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Aug 10 13:31:36 2020 -0400
+
+    Fixed linting issues
+
 commit 21d086b09a0f908b03ad4b907917c7a2e26b951e
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Mon Aug 10 13:26:28 2020 -0400
